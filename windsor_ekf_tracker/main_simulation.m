@@ -24,13 +24,23 @@ grid on;
 % // KALMAN FILTER INITIALIZATION //
 % 1. Memory Array
 N =length(t);
-x_est = zeros(1,N);
-P_mat = zeros(1,N);
+x_est = zeros(1,N); % creates a row of zeros for N units
+P_mat = zeros(1,N); % creates a record for the filter to store uncertainty values
 % 2. First Guess
 x_est = 0; % Telling the filter to assume the staring position as 0
-P = 10.0;
+P = 10.0; % Uncertainty at 10.0 is very High.
 P_mat(1)=P;
 % 3. Filter Hyperparameters
 Q = 0.01; % Process Noise Variance (0.01 means the noise does not affect the math model too much)
 R = noise_amplitude^2; % Measured Noise Variance: How untrustworthy the sensor is (3^2=9 :Very untrustworthy) 
+
+%//KALMAN FILTER RECURSIVE LOOP //
+% 1. Predict Phase
+x_pred = x_est(k-1) + true_velocity*dt; % Predicted new position = Former position + Distance(V * T)
+P_pred = P + Q; % Predicted uncertainty = Former uncertainty + Process Noise.
+% 2. Update/Correction Phase
+K = P_pred / (P_pred + R); %Kalman Gain
+x_est(k)= x_pred + K * (noisy_sensor_readings -x_pred); % Final estimate = predicted position + Kalman Gain * (diff btwn sensor and math model)
+P = (1-K)*P_pred; % After looking at sensor readings, the uncertainty is reduced.
+P_mat(K) = P; % Saving the current uncertainty value in the filter's record 
 
