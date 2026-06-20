@@ -20,3 +20,17 @@ ylabel('Robot Position (meters)');
 title('The Sensor Estimation Challenge: Noisy Radar vs. Reality');
 legend('True Trajectory (Physics)', 'Noisy Sensor Readings (Reality)');
 grid on;
+
+% // KALMAN FILTER INITIALIZATION //
+% 1. Memory Array
+N =length(t);
+x_est = zeros(1,N);
+P_mat = zeros(1,N);
+% 2. First Guess
+x_est = 0; % Telling the filter to assume the staring position as 0
+P = 10.0;
+P_mat(1)=P;
+% 3. Filter Hyperparameters
+Q = 0.01; % Process Noise Variance (0.01 means the noise does not affect the math model too much)
+R = noise_amplitude^2; % Measured Noise Variance: How untrustworthy the sensor is (3^2=9 :Very untrustworthy) 
+
