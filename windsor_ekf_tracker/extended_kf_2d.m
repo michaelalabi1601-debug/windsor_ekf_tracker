@@ -45,4 +45,10 @@ title('2D Tracking Arena: True Trajectory vs. Noisy GPS');
 legend('True Path (Ground Truth)', 'Noisy GPS Position', 'Location', 'best');
 grid on; axis equal;
 
+% PREPARATION FOR PHASE 3: EKF JACOBIAN MATRICES
 
+F_jacobian = eye(4);  % 4x4 Identity matrix as a starting baseline
+H_jacobian = [1, 0, 0, 0; 
+              0, 1, 0, 0]; % Maps the 4 robot states to the 2 GPS measurements (X and Y)
+
+disp('Phase 2 fully complete. Structural matrices initialized for EKF conversion.');
