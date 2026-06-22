@@ -28,8 +28,8 @@ for k = 2:N
     % Predicted Values using 2D linear Kinematics 
     x_true(1,k) = x_true(1, k-1) + v_prev * cos(theta_prev) * dt; 
     x_true(2,k) = x_true(2, k-1) + v_prev * sin(theta_prev) * dt;
-    x_true(3,k) = theta_prev + u(2); % New heading angle = old one + 5 deg/s
-    x_true(4,k) = v_prev + u(1); % New velocity = old velocity + constant acc of 0.1m/s^2
+    x_true(3,k) = theta_prev + u(2) * dt; % New heading angle = old one + 5 deg/s
+    x_true(4,k) = v_prev + u(1) * dt; % New velocity = old velocity + constant acc of 0.1m/s^2
     % Noisy 2D Position Sensor 
     z_measured(:,k)= x_true(1:2,k) + noise_sigma * randn(2,1); % sensor reading = x & y positions + noise deviation * column vector of reandom numbers
 end
