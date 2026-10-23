@@ -18,29 +18,21 @@ A robust, custom-built Extended Kalman Filter (EKF) localization and state estim
 
 ### 1. State Vector
 The system state $x_k$ at time step $k$ is defined as:
-$$x_k = \begin{bmatrix} x & y & \theta \end{bmatrix}^T$$
+**xₖ = [x, y, θ]ᵀ**
 where $(x, y)$ represents the 2D Cartesian position and $\theta$ represents the heading orientation.
 
 ### 2. Prediction Step (Motion Model)
 Given linear velocity $v$ and angular velocity $\omega$:
-$$x_{k|k-1} = x_{k-1} + \begin{bmatrix} v \cos(\theta_{k-1}) \Delta t \\ v \sin(\theta_{k-1}) \Delta t \\ \omega \Delta t \end{bmatrix}$$
+**xₖ₌₁|ₖ = xₖ₋₁ + [v · cos(θₖ₋₁) · Δt,  v · sin(θₖ₋₁) · Δt,  ω · Δt]ᵀ**
 
 The process model Jacobian matrix $F_k = \frac{\partial f}{\partial x}$ is computed analytically as:
-$$F_k = \begin{bmatrix} 
-1.0 & 0.0 & -v \sin(\theta) \Delta t \\ 
-0.0 & 1.0 & v \cos(\theta) \Delta t \\ 
-0.0 & 0.0 & 1.0 
-\end{bmatrix}$$
+**Fₖ = [ [1.0, 0.0, -v · sin(θ) · Δt], [0.0, 1.0, v · cos(θ) · Δt], [0.0, 0.0, 1.0] ]**
 
-Covariance prediction:
-$$P_{k|k-1} = F_k P_{k-1} F_k^T + Q$$
+* **Covariance Prediction:** $P_{k|k-1} = F_k P_{k-1} F_k^T + Q$
 
 ### 3. Update Step (Measurement Model)
-Using a GPS sensor measuring 2D position $z = \begin{bmatrix} z_x & z_y \end{bmatrix}^T$:
-$$H = \begin{bmatrix} 
-1.0 & 0.0 & 0.0 \\ 
-0.0 & 1.0 & 0.0 
-\end{bmatrix}$$
+Using a GPS sensor measuring 2D position $z = [z_x, z_y]^T$:
+**H = [ [1.0, 0.0, 0.0], [0.0, 1.0, 0.0] ]**
 
 * **Innovation Covariance:** $S = H P_{k|k-1} H^T + R$
 * **Kalman Gain:** $K = P_{k|k-1} H^T S^{-1}$
