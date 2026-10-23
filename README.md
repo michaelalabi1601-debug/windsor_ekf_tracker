@@ -13,6 +13,10 @@ A robust, custom-built Extended Kalman Filter (EKF) localization and state estim
 * **Modular ROS 2 Architecture:** Clean separation of concerns between trajectory/sensor simulation nodes and state estimation nodes.
 
 ---
+## 📊 System Demonstration
+
+![RViz2 EKF Tracking Simulation](rviz_demo.gif)
+---
 
 ## 📐 Mathematical Formulation
 
